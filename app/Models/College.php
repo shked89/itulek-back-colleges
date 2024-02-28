@@ -11,6 +11,8 @@ class College extends Model
     
     protected $table = 'college.colleges';
     
+    public $timestamps = false;
+
     protected $fillable = ['title'];
     
 }

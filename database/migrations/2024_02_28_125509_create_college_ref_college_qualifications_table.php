@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('college.college_addresses', function (Blueprint $table) {
+        Schema::create('college.ref_college_qualifications', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('college_id');
+            $table->bigInteger('college_id');
             $table->foreign('college_id')->references('id')->on('college.colleges')->onDelete('cascade');
-            $table->string('country_name');
-            $table->unsignedBigInteger('city_id');
-            $table->foreign('city_id')->references('id')->on('college.cities')->onDelete('cascade');
-            $table->string('address_name');
-            $table->timestamps();
+            $table->bigInteger('qualification_id');
+            $table->foreign('qualification_id')->references('id')->on('college.qualifications')->onDelete('cascade');
+
         });
     }
 
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('college.college_addresses');
+        Schema::dropIfExists('college.ref_college_qualifications');
     }
 };

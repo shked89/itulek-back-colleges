@@ -11,6 +11,8 @@ class City extends Model
     
     protected $table = 'college.cities';
     
+    public $timestamps = false;
+
     protected $fillable = ['name'];
     
 }

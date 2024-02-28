@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('college.study_groups', function (Blueprint $table) {
+        Schema::create('college.education_profiles', function (Blueprint $table) {
             $table->id();
-            $table->string('study_group_title');
-            $table->string('language_iso');
-            $table->unsignedBigInteger('faculty_id');
-            $table->foreign('faculty_id')->references('id')->on('college.faculties')->onDelete('cascade');
-            $table->timestamps();
+            $table->string('caption');
         });
     }
 
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('college.study_groups');
+        Schema::dropIfExists('college.education_profiles');
     }
 };

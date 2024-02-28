@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('college.colleges', function (Blueprint $table) {
+        Schema::create('college.ref_person_disciplines', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('caption');
+            $table->unsignedBigInteger('discipline_id');
+            $table->unsignedBigInteger('person_id');
+            $table->foreign('discipline_id')->references('id')->on('college.disciplines')->onDelete('cascade');
         });
     }
 
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('college.colleges');
+        Schema::dropIfExists('college.ref_person_disciplines');
     }
 };

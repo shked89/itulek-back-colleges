@@ -4,17 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Services\CollegeService;
 use Illuminate\Http\Request;
+use App\Services\CollegeQualificationService;
 
 
 
 class CollegeController extends Controller
 {
-    protected $collegeService;
+    protected $collegeService;      
+    protected $collegeQualificationService;
 
-    public function __construct(CollegeService $collegeService)
+    public function __construct(CollegeService $collegeService, CollegeQualificationService $collegeQualificationService)
     {
         $this->collegeService = $collegeService;
+        $this->collegeQualificationService = $collegeQualificationService;
     }
+    
+
 
     public function index()
     {
