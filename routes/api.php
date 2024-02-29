@@ -44,7 +44,10 @@ Route::prefix('colleges')->group(function () {
         Route::delete('/delete-disciplines', [DisciplineController::class, 'deleteDiscipline']);
         //Департаменты 
         Route::get('/show-departments', [DepartmentController::class, 'indexDepartments']);
-
+        Route::post('/department/add', [DepartmentController::class, 'addDepartment']);
+        Route::get('/index-departments-main', [DepartmentController::class, 'getDepartments']);
+        Route::delete('/department/delete', [DepartmentController::class, 'deleteDepartment']);
+        Route::patch('/department/update', [DepartmentController::class, 'updateDepartment']);
     
     });
 

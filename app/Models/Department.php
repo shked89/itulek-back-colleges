@@ -15,20 +15,21 @@ class Department extends Model
     // Защищённые поля, которые можно массово назначать
     protected $fillable = [
         'caption',
-        'discipline_id',
-        'speciality_id',
-        
+        'college_id'       
 
     ];
 
-    public function speciality()
+
+
+    public function college()
     {
-        return $this->belongsTo(Speciality::class, 'speciality_id');
+        return $this->belongsTo(Speciality::class, 'college_id');
     }
     
-    public function disciplines()
-    {
-        return $this->belongsToMany(Discipline::class, 'college.ref_department_to_discipline', 'department_id', 'discipline_id');
-    }
+    public function specialities()
+{
+    return $this->belongsToMany(Speciality::class, 'college.ref_speciality_department_college', 'department_id', 'speciality_id');
+}
+
 
 }

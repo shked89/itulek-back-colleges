@@ -46,11 +46,12 @@ class CollegeQualificationService
                 $query->where('college_id', $collegeId);
             });
         }])->paginate(20);  // кол-во элементов на страницу
-    
+
         return $specialities;
     }
 
     //Поиск Специальностей
+
     public function searchSpecialities(?string $searchTerm): Collection
     {
         $query = Speciality::query();
@@ -60,8 +61,22 @@ class CollegeQualificationService
                 ->orWhere('speciality_code', 'like', "%{$searchTerm}%");
         }
 
-        return $query->with('qualifications')->get();
+        return $query->get();
     }
+
+
+
+    // public function searchSpecialities(?string $searchTerm): Collection
+    // {
+    //     $query = Speciality::query();
+
+    //     if ($searchTerm) {
+    //         $query->where('title', 'like', "%{$searchTerm}%")
+    //             ->orWhere('speciality_code', 'like', "%{$searchTerm}%");
+    //     }
+
+    //     return $query->with('qualifications')->get();
+    // }
 
     /**
      *

@@ -7,40 +7,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class RefDepartmentToSpecialist extends Model
 {
-    /**
-     * Ассоциированная с моделью таблица.
-     *
-     * @var string
-     */
-    protected $table = 'college.ref_department_to_discipline';
+    use HasFactory;
 
-    /**
-     * Поля, доступные для массового присвоения.
-     *
-     * @var array
-     */
-    protected $fillable = ['department_id', 'discipline_id'];
+    protected $table = 'college.ref_speciality_department_college';
 
-    /**
-     * Отключение меток времени, если они не используются.
-     */
+    protected $fillable = [
+        'speciality_id',
+        'department_id',
+        'college_id',
+    ];
+
     public $timestamps = false;
 
-    /**
-     * Отношение к департаменту.
-     */
+    public function speciality()
+    {
+        return $this->belongsTo(Speciality::class, 'speciality_id');
+    }
+
     public function department()
     {
-        // Предполагается, что у вас уже есть модель Department, связанная с таблицей departments
         return $this->belongsTo(Department::class, 'department_id');
     }
 
-    /**
-     * Отношение к дисциплине.
-     */
-    public function discipline()
+    public function college()
     {
-        // Предполагается, что у вас уже есть модель Discipline, связанная с таблицей disciplines
-        return $this->belongsTo(Discipline::class, 'discipline_id');
+        return $this->belongsTo(College::class, 'college_id');
     }
 }
