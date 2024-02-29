@@ -15,6 +15,7 @@ class CollegeQualificationController extends Controller
         $this->collegeQualificationService = $collegeQualificationService;
     }
 
+    //Метод добавления Квалификаций
     public function storeQualification(Request $request)
     {
         $collegeId = $request->query('college_id');
@@ -28,6 +29,7 @@ class CollegeQualificationController extends Controller
 
         return response()->json($collegeQualification, 201);
     }
+    //Метод Вывода Квалификаций на главную страницу
 
     public function getQualificationsByCollege(Request $request)
     {
@@ -42,7 +44,7 @@ class CollegeQualificationController extends Controller
     
         return response()->json($qualifications);
     }
-
+    //Вывод Специальностей по поиску на главную страницу
     public function indexSpecialities(Request $request)
     {
 
@@ -51,6 +53,7 @@ class CollegeQualificationController extends Controller
 
         return response()->json($specialities);
     }
+    //Вывод Квалификаций по специальностям и поиску
 
     public function indexQalifications(Request $request)
     {
@@ -62,6 +65,8 @@ class CollegeQualificationController extends Controller
 
         return response()->json($qualifications);
     }
+
+    //Обновление Квалификаций
 
     public function updateQualification(Request $request)
     {
@@ -77,6 +82,8 @@ class CollegeQualificationController extends Controller
 
         return response()->json($collegeQualification, 200);
     }
+
+    //Удаление Квалификаций
 
     public function deleteQualification(Request $request)
     {

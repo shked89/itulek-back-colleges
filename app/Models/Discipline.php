@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Models\College;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\College;
+use App\Models\DisciplineType;
+use App\Models\Department;
 class Discipline extends Model
 {
     // Указание имени таблицы
@@ -15,7 +17,7 @@ class Discipline extends Model
     // Защищённые поля, которые можно массово назначать
     protected $fillable = [
         'caption',
-        'discipline_type',
+        'discipline_type_id',
         'department_id',
         'college_id',
     ];
@@ -23,9 +25,19 @@ class Discipline extends Model
     /**
      * Связь с моделью Department.
      */
-    public function department()
+    public function departments()
     {
-        return $this->belongsTo(Department::class, 'department_id');
+        return $this->belongsToMany(
+            Department::class, 
+            'college.ref_department_to_discipline', // Имя таблицы связи
+            'discipline_id', // Внешний ключ для текущей модели (Discipline)
+            'department_id'  // Внешний ключ для модели Department
+        );
+    }
+
+    public function discipline_type()
+    {
+        return $this->belongsTo(DisciplineType::class, 'discipline_type_id');
     }
 
     /**
@@ -37,4 +49,4 @@ class Discipline extends Model
     }
 
     // Здесь можно добавить дополнительные связи, аксессоры или мутаторы, если они нужны
-}
+} 

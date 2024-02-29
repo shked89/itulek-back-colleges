@@ -17,6 +17,7 @@ class CollegeQualificationService
      * @param int $qualificationId
      * @return CollegeQualification
      */
+    //Вставка Данных
     public function insertCollegeQualification(int $collegeId, int $qualificationId): CollegeQualification
     {
         $collegeQualification = new CollegeQualification([
@@ -33,21 +34,23 @@ class CollegeQualificationService
      *
      * @param int $collegeId
      * @return Collection
+     * 
      */
+    //Вывод Квалификаций на главную страницу 
     public function getSpecialitiesWithQualificationsByCollege(int $collegeId): LengthAwarePaginator
     {
-        // Изменяем метод get() на paginate(), чтобы включить пагинацию
         $specialities = Speciality::whereHas('qualifications.collegeQualifications', function ($query) use ($collegeId) {
             $query->where('college_id', $collegeId);
         })->with(['qualifications' => function ($query) use ($collegeId) {
             $query->whereHas('collegeQualifications', function ($query) use ($collegeId) {
                 $query->where('college_id', $collegeId);
             });
-        }])->paginate(20); // Указываем количество элементов на страницу
+        }])->paginate(20);  // кол-во элементов на страницу
     
         return $specialities;
     }
 
+    //Поиск Специальностей
     public function searchSpecialities(?string $searchTerm): Collection
     {
         $query = Speciality::query();
@@ -66,6 +69,7 @@ class CollegeQualificationService
      * @param  string|null  $searchTerm
      * @return Collection
      */
+    //Поиск Квалификации по специальности
     public function getQualificationsBySpecialityAndSearch(?int $specialityId, ?string $searchTerm): Collection
     {
         $query = Qualification::with('speciality');
@@ -80,6 +84,7 @@ class CollegeQualificationService
 
         return $query->get();
     }
+    //Обновление Квалификаций у колледжа
     public function updateCollegeQualification(int $id, int $collegeId, int $qualificationId): CollegeQualification
     {
         $collegeQualification = CollegeQualification::findOrFail($id);
@@ -90,6 +95,8 @@ class CollegeQualificationService
 
         return $collegeQualification;
     }
+
+    //Удаление Квалификаций у колледжа
 
     public function deleteCollegeQualification(int $id): bool
     {

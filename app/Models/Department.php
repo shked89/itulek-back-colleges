@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\College;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +15,20 @@ class Department extends Model
     // Защищённые поля, которые можно массово назначать
     protected $fillable = [
         'caption',
+        'discipline_id',
+        'speciality_id',
+        
+
     ];
 
-    // Здесь можно добавить дополнительные связи, аксессоры или мутаторы, если они нужны
+    public function speciality()
+    {
+        return $this->belongsTo(Speciality::class, 'speciality_id');
+    }
+    
+    public function disciplines()
+    {
+        return $this->belongsToMany(Discipline::class, 'college.ref_department_to_discipline', 'department_id', 'discipline_id');
+    }
+
 }
