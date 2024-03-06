@@ -68,40 +68,72 @@ class DisciplineService
     }
     
     
-    /** 
-    * @param int $id ID дисциплины для обновления
-    * @param array $data Новые данные для дисциплины
-    * @return Discipline Обновленная модель дисциплины
-    */
-    public function updateDiscipline(int $id, array $data)
-    {
 
-        
-
-        return DB::transaction(function () use ($id, $data) {
-            $discipline = Discipline::findOrFail($id);
-            $discipline->update($data);
+    // public function updateDisciplineNew(int $id, array $data)
+    // {
+    //     return DB::transaction(function () use ($id, $data) {
+    //         // Находим и обновляем дисциплину
+    //         $discipline = Discipline::find($id);
+    //         if (!$discipline) {
+    //             // Обработка случая, если дисциплина не найдена
+    //             return null;
+    //         }
+    //         $discipline->update([
+    //             'caption' => $data['caption'],
+    //             'discipline_type_id' => $data['discipline_type_id'],
+    //             'college_id' => $data['college_id'],
+    //         ]);
     
-            // Предполагая, что $data['department_ids'] содержит массив ID департаментов
-            if (isset($data['department_ids'])) {
-                // Обновляем связи в college.ref_department_to_discipline
-                // Сначала удаляем старые связи
-                DB::table('college.ref_department_to_discipline')->where('discipline_id', $id)->delete();
-                // Добавляем новые связи
-                foreach ($data['department_ids'] as $departmentId) {
-                    DB::table('college.ref_department_to_discipline')->insert([
-                        'discipline_id' => $id,
-                        'department_id' => $departmentId,
-                    ]);
-                    
-                }
-                
-            }
-
+    //         // Находим и обновляем запись связи. Предполагаем, что между департаментом и дисциплиной существует уникальная связь.
+    //         $ref = RefDepartmentToDiscipline::where('discipline_id', $id)->first();
+    //         if ($ref) {
+    //             $ref->update([
+    //                 'department_id' => $data['department_id'],
+    //             ]);
+    //         } else {
+    //             // Если запись связи не найдена, создаем новую
+    //             $ref = RefDepartmentToDiscipline::create([
+    //                 'department_id' => $data['department_id'],
+    //                 'discipline_id' => $discipline->id,
+    //             ]);
+    //         }
     
-            return $discipline;
-        });
-    }
+    //         return compact('discipline', 'ref');
+    //     });
+    // }
+
+    public static function updateDisciplineAndLinkToDepartment($id, $data)
+{
+    return DB::transaction(function () use ($id, $data) {
+        // Находим и обновляем дисциплину
+        $discipline = Discipline::find($id);
+        if (!$discipline) {
+            // Обработка случая, если дисциплина не найдена
+            return null;
+        }
+        $discipline->update([
+            'caption' => $data['caption'],
+            'discipline_type_id' => $data['discipline_type_id'],
+            'college_id' => $data['college_id'],
+        ]);
+
+        // Находим и обновляем запись связи. Предполагаем, что между департаментом и дисциплиной существует уникальная связь.
+        $ref = RefDepartmentToDiscipline::where('discipline_id', $id)->first();
+        if ($ref) {
+            $ref->update([
+                'department_id' => $data['department_id'],
+            ]);
+        } else {
+            // Если запись связи не найдена, создаем новую
+            $ref = RefDepartmentToDiscipline::create([
+                'department_id' => $data['department_id'],
+                'discipline_id' => $discipline->id,
+            ]);
+        }
+
+        return compact('discipline', 'ref');
+    });
+}
    
    /**
     * Удаляет дисциплину и связанные с ней данные из ref_department_to_discipline.

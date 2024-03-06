@@ -1,13 +1,17 @@
 <?php
 
+use App\Http\Controllers\StudentGroupController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CollegeController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CollegeAddressController;
 use App\Http\Controllers\CollegeQualificationController;
+use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\DisciplineController;
 use App\Http\Controllers\DepartmentController;
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,12 +39,12 @@ Route::prefix('colleges')->group(function () {
         Route::get('/qualificationsIndexAdd', [CollegeQualificationController::class, 'indexQalifications']);
         Route::patch('/qualificationsUpdate', [CollegeQualificationController::class, 'updateQualification']);
         Route::delete('/qualificationsDelete', [CollegeQualificationController::class, 'deleteQualification']);
-        
+
         //Дисциплины
-        Route::post('/create-discipline-college', [DisciplineController ::class, 'createDisciplinesToCollege']);
-        Route::get('/index-discipline', [DisciplineController ::class, 'indexDisciplinesMain']);
+        Route::post('/create-discipline-college', [DisciplineController::class, 'createDisciplinesToCollege']);
+        Route::get('/index-discipline', [DisciplineController::class, 'indexDisciplinesMain']);
         Route::get('/discipline-types', [DisciplineController::class, 'indexDisciplineType']);
-        Route::patch('/update-disciplines', [DisciplineController::class, 'updateDiscipline']);
+        Route::patch('/update_disciplines', [DisciplineController::class, 'updateDisciplineMethod']);
         Route::delete('/delete-disciplines', [DisciplineController::class, 'deleteDiscipline']);
         //Департаменты 
         Route::get('/show-departments', [DepartmentController::class, 'indexDepartments']);
@@ -48,9 +52,19 @@ Route::prefix('colleges')->group(function () {
         Route::get('/index-departments-main', [DepartmentController::class, 'getDepartments']);
         Route::delete('/department/delete', [DepartmentController::class, 'deleteDepartment']);
         Route::patch('/department/update', [DepartmentController::class, 'updateDepartment']);
-    
-    });
+        
+        //Рупы
+        Route::get('/createCurriculum', [CurriculumController::class, 'create']);
 
+
+        
+
+    });
+    Route::prefix('src1')->group(function () {
+        Route::get('/group/index-study-groups', [StudentGroupController::class, 'indexStudyGroup']);
+
+        
+    });
 });
 
 

@@ -58,27 +58,26 @@ class DisciplineController  extends Controller
         return response()->json($disciplineTypes);
     }
 
-    public function updateDiscipline(Request $request)
+    public function updateDisciplineMethod(Request $request)
     {
-        $validator = Validator::make($request->query(), [
-            'id' => 'required|integer|exists:disciplines,id',
-            'caption' => 'sometimes|string',
-            'discipline_type_id' => 'sometimes|integer',
-            'department_id' => 'sometimes|integer',
-            'college_id' => 'sometimes|integer',
+        $data = $request->validate([
+            'id' => 'required|integer', // Валидация идентификатора дисциплины
+            'caption' => 'required|string',
+            'discipline_type_id' => 'required|integer',
+            'college_id' => 'required|integer',
+            'department_id' => 'required|integer',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+        $id = $data['id']; // Извлекаем идентификатор дисциплины из данных запроса
+
+        $result = DisciplineService::updateDisciplineAndLinkToDepartment($id, $data);
+
+        if (!$result) {
+            // Обработка случая, если дисциплина не найдена или другая ошибка
+            return response()->json(['message' => 'Дисциплина не найдена или ошибка обновления'], 404);
         }
 
-        $data = $validator->validated();
-        $id = $data['id'];
-        unset($data['id']); // Удаляем ID из данных для обновления
-
-        $discipline = $this->disciplineService->updateDiscipline($id, $data);
-
-        return response()->json($discipline);
+        return response()->json(['message' => 'Дисциплина и связь успешно обновлены', 'data' => $result], 200);
     }
 
     public function deleteDiscipline(Request $request)

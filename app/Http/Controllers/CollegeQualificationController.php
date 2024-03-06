@@ -93,7 +93,7 @@ class CollegeQualificationController extends Controller
             return response()->json(['error' => 'Необходим id'], 400);
         }
 
-        $deleted = $this->collegeQualificationService->deleteCollegeQualification($id);
+        $deleted = $this->collegeQualificationService->deleteCollegeQualificationByQualificationId($id);
 
         if ($deleted) {
             return response()->json(['message' => 'Запись успешно удалена'], 200);
