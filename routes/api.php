@@ -10,6 +10,7 @@ use App\Http\Controllers\CollegeQualificationController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\DisciplineController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\SpecialityController;
 
 
 /*
@@ -54,14 +55,15 @@ Route::prefix('colleges')->group(function () {
         Route::patch('/department/update', [DepartmentController::class, 'updateDepartment']);
         
         //Рупы
-        Route::get('/createCurriculum', [CurriculumController::class, 'create']);
 
+        
 
         
 
     });
     Route::prefix('src1')->group(function () {
         Route::get('/group/index-study-groups', [StudentGroupController::class, 'indexStudyGroup']);
+        Route::get('/specialities/{id}', [SpecialityController::class, 'show']);
 
         
     });
