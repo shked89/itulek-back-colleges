@@ -40,19 +40,40 @@ class StudentGroupService
     
         $studyGroups = json_decode($response->getBody()->getContents(), true);
     
+        // Обогащаем данные о учебных группах информацией о департаментах и специальностях
+        $studyGroups = $this->enrichStudyGroupsWithDepartments($studyGroups);
+        $studyGroups = $this->enrichStudyGroupsWithSpecialities($studyGroups);
+    
+        // Переструктурируем учебные группы для вывода
+        $structuredStudyGroups = array_map(function ($group) {
+            return [
+                'id' => $group['id'],
+                'start_year' => $group['start_year'],
+                'college_id' => $group['college_id'],
+                'adviser_id' => $group['adviser_id'],
+                'department_id' => $group['department_id'],
+                'speciality_id' => $group['speciality_id'],
+                'department_caption' => $group['department_caption'], // Добавляем это поле
+                'speciality_title' => $group['speciality_title'], // Добавляем это поле
+                'edu_base_title' => $group['edu_base_title'],
+                'study_group_info' => $group['study_group_info'],
+                'ref_study_group_to_qualifications' => $group['ref_study_group_to_qualifications'],
+            ];
+        }, $studyGroups);
+    
         // Вычисляем смещение на основе текущей страницы и количества элементов на страницу
         $offset = ($page - 1) * $perPage;
     
         // Применяем смещение и лимит для пагинации
-        $paginatedItems = array_slice($studyGroups, $offset, $perPage);
+        $paginatedItems = array_slice($structuredStudyGroups, $offset, $perPage);
     
         // Подготавливаем и возвращаем данные пагинации
         return [
             'data' => $paginatedItems,
             'current_page' => $page,
             'per_page' => $perPage,
-            'total' => count($studyGroups),
-            'total_pages' => ceil(count($studyGroups) / $perPage)
+            'total' => count($structuredStudyGroups),
+            'total_pages' => ceil(count($structuredStudyGroups) / $perPage)
         ];
     }
 
